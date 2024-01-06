@@ -43,6 +43,7 @@ dependencies:
   dio: ^5.4.0
   date_time_picker: ^2.1.0
   loading_indicator: ^3.1.1
+  introduction_screen:
 
 dev_dependencies:
   flutter_test:

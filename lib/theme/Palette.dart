@@ -13,7 +13,7 @@ class Palette{
   static const blueNightColor = Color.fromRGBO(1, 6, 88, 1.0);
   static const cardColor = Color.fromRGBO(37, 37, 37, 1.0);
   static const buttonColor = Colors.blueAccent;
-  static const orangeColor = Colors.deepOrange;
+  static const orangeColor = Color.fromRGBO(255, 129, 3, 1.0);
 
   static var darkModeTheme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: backgroundColor,

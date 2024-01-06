@@ -4,6 +4,7 @@ import 'package:todolistgroup/screens/OnBoardingScreen.dart';
 import 'package:todolistgroup/screens/LoginScreen.dart';
 import 'package:todolistgroup/screens/SignUpScreen.dart';
 import 'package:todolistgroup/screens/HomeScreen.dart';
+import 'package:todolistgroup/screens/WelcomeScreen.dart';
 import 'package:todolistgroup/theme/Palette.dart';
 
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         LoginScreenPage.routeName: (context) => LoginScreenPage(),
         SignUpScreen.routeName: (context) => SignUpScreen(),
         HomeScreenPage.routeName: (context) => HomeScreenPage(),
+        WelcomeScreen.routeName : (context) => WelcomeScreen(),
       },
     );
   }

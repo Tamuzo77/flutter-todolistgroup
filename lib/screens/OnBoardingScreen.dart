@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:todolistgroup/screens/LoginScreen.dart';
 import 'package:todolistgroup/screens/SignUpScreen.dart';
+import 'package:todolistgroup/screens/WelcomeScreen.dart';
 import 'package:todolistgroup/theme/Palette.dart';
 
 class OnBoardingScreenPage extends StatefulWidget {
@@ -19,22 +21,22 @@ class _OnBoardingScreenPageState extends State<OnBoardingScreenPage> {
 
   final _elements = [
     (
-    'Explore endless Possibilities',
-    "Experience a seamless shopping journey with Yazida. Discover a wide range of products and enjoy personalized recommendations",
+    'Manage your tasks',
+    "You can easily manage all of your daily tasks in UpToDo ",
     Colors.deepPurple,
-    'loginEmote.png'
+    'taskManagement.png'
     ),
     (
-    'Uncover Unique Treasures',
-    "Dive into our diverse collection of fashion, electronics, home decor, and more",
+    'Create daily routine',
+    "In Uptodo  you can create your personalized routine to stay productive",
     Colors.blueAccent,
-    'todo-1.png'
+    'dailyRoutine.png'
     ),
     (
-    'Easy Ordering and Checkout',
-    "Simplify your shopping experience with secure checkout and hassie-free payment for swift delivery",
+    'Organize your tasks',
+    "You can organize your daily tasks by adding your tasks into separate categories",
     Colors.indigo,
-    'todoprogress.png'
+    'taskOrganization.png'
     ),
   ];
 
@@ -54,7 +56,7 @@ class _OnBoardingScreenPageState extends State<OnBoardingScreenPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: SafeArea(
+      body: /*SafeArea(
         child: Column(
           children: [
             Expanded(
@@ -146,45 +148,60 @@ class _OnBoardingScreenPageState extends State<OnBoardingScreenPage> {
             )
           ],
         ) ,
-      ) ,
+      ) */
+      IntroductionScreen(
+        pages: List.generate(_elements.length, (index) {
+          var (title, description, color, image) = _elements[index];
 
-    );
-  }
-}
+          return PageViewModel(
+            titleWidget: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.lobster(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold
+              ) ,
+            ),
+            body: description,
+            image: Image.asset(
+                "assets/images/$image",
 
-class PageIndicators extends StatelessWidget {
-  final int totalPages;
-
-  final int currentPage;
-
-  PageIndicators({
-    super.key,
-    required this.currentPage,
-    required this.totalPages
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          for (int i = 0; i <totalPages; i++)
-            Container(
-              width: i == this.currentPage ? 30 : 10,
-              height: 10,
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: i == this.currentPage ? Colors.deepOrange : Colors.grey
-              ),
-              //child: Text(i.toString()),
+            ),
+            decoration: PageDecoration(
+              pageMargin: const EdgeInsets.symmetric(vertical: 50),
+              imageFlex: 2,
+              bodyTextStyle: GoogleFonts.dmSerifDisplay(
+                color: Colors.grey[400],
+                fontSize: 20,
+                fontStyle: FontStyle.italic
+              )
             )
-        ],
+
+          );
+        }),
+        showSkipButton: false,
+        showDoneButton: true,
+        showBackButton: true,
+        next: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Next',),
+            Icon(Icons.navigate_next)
+          ],
+        ),
+        done: const Text("Get Started"),
+        back: const Text("Back"),
+        onDone: (){
+          Navigator.pushNamed(context, WelcomeScreen.routeName);
+        },
+        doneStyle: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(Palette.buttonColor),
+          foregroundColor: MaterialStatePropertyAll(Colors.white)
+        ),
+
       ),
+
     );
   }
 }
+
