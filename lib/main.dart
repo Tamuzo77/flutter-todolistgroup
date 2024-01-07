@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todolistgroup/screens/Calendar.dart';
+import 'package:todolistgroup/screens/DetailsTaskScreen.dart';
 import 'package:todolistgroup/screens/MainScreen.dart';
 import 'package:todolistgroup/screens/OnBoardingScreen.dart';
 import 'package:todolistgroup/screens/LoginScreen.dart';
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         SignUpScreen.routeName: (context) => SignUpScreen(),
         HomeScreenPage.routeName: (context) => HomeScreenPage(),
         WelcomeScreen.routeName : (context) => WelcomeScreen(),
+        DetailsTaskScreen.routeName: (context) => DetailsTaskScreen(),
+        Calendar.routeName : (context) => Calendar(),
       },
     );
   }
