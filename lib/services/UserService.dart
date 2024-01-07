@@ -19,7 +19,7 @@ class UserService {
   static Future<bool> checkUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await Future.delayed(Duration(seconds: 2));
-    if (prefs.getString('authUser') != null &&
+    if (prefs.getStringList('authUser') != null &&
             prefs.getString('authToken') != null ) {
       return true;
     }

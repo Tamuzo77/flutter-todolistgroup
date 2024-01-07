@@ -1,4 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todolistgroup/models/authenticated_user.dart';
+import 'package:todolistgroup/screens/HomeScreen.dart';
+import 'package:todolistgroup/services/UserService.dart';
 
 class LoginScreenPage extends StatefulWidget {
   const LoginScreenPage({super.key});
@@ -9,12 +15,45 @@ class LoginScreenPage extends StatefulWidget {
 }
 
 class _LoginScreenPageState extends State<LoginScreenPage> {
-  final nameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   String name = "";
   bool loading = false;
   bool displayInfo = false;
+
+  void onPressed() async{
+
+    // TODO: Validation du formulaire
+    final UserService userService = UserService();
+    Navigator.pop(context);
+    setState(() {
+      loading = true;
+    });
+    try{
+      Map<String, dynamic> data = {
+        'email': emailController.text,
+        'strategy': 'local',
+        'password': passwordController.text,
+      };
+      AuthenticatedUser user = await userService.login(data);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('authToken',user.accessToken!);
+      prefs.setStringList('authUser', [user.user!.fullname!, user.user!.email!]);
+      showToast("Utilisateur crée avec succes !", context: context);
+      Navigator.pushReplacementNamed(context, HomeScreenPage.routeName);
+    }on DioException catch(e){
+      if (e.response != null) {
+        print(e.response?.statusCode);
+        print(e.response?.headers);
+        print(e.response?.statusMessage);
+      } else {
+        print(e.message);
+      }
+      showToast("Une erreur est survenue !", context: context);
+    }
+  }
   displayDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -30,29 +69,13 @@ class _LoginScreenPageState extends State<LoginScreenPage> {
                   child: const Text("Annuler")
               ),
               TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      loading = true;
-                    });
-                    Future.delayed(const Duration(seconds: 5), () {
-                      setState(() {
-                        loading = false;
-                        name = nameController.text;
-                        displayInfo = true;
-                      });
-                    });
-                  },
+                  onPressed: onPressed,
                   child: const Text("OK")
               ),
             ],
           );
         }
     );
-  }
-
-  void onPressed(){
-
   }
   @override
   Widget build(BuildContext context) {
@@ -69,7 +92,7 @@ class _LoginScreenPageState extends State<LoginScreenPage> {
            Text('Happy to see you again!',style: TextStyle(color: Colors.lightBlueAccent,fontSize: 20)),
            Padding(padding: EdgeInsets.only(top: 70)),
            TextFormField(
-              controller: nameController,
+              controller: emailController,
              decoration: InputDecoration(
              labelText: 'Nom',
              hintText: 'Entrez votre nom d''utilisateur',
@@ -98,11 +121,8 @@ class _LoginScreenPageState extends State<LoginScreenPage> {
            Padding(padding: EdgeInsets.only(top: 70)),
            ElevatedButton(
                onPressed: () {
-                 if(formKey.currentState!.validate()) {
                    displayDialog(context);
-                   onPressed;
 
-                 }
                },
                child: loading ? SizedBox(
                  height: 30,

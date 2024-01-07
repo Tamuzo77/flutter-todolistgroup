@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:todolistgroup/screens/LoginScreen.dart';
 import 'package:todolistgroup/services/UserService.dart';
 
@@ -26,6 +27,7 @@ class _SignUpScreenPageState extends State<SignUpScreen> {
 
 
       final UserService userService = UserService();
+      // TODO: Verifier la validation du formulaire
 
       try {
         Map<String, dynamic> dataUser = {
@@ -33,10 +35,12 @@ class _SignUpScreenPageState extends State<SignUpScreen> {
           'email': emailController.text,
           'password': passwordController.text
         };
-        var user = await userService.signUp(dataUser);
+        await userService.signUp(dataUser);
         
-        print(user);
+
         Navigator.pushReplacementNamed(context, LoginScreenPage.routeName);
+
+        showToast("Utilisateur crée avec succes !");
       } on DioException catch (e) {
         if (e.response != null) {
           print(e.response?.statusCode);
@@ -45,7 +49,7 @@ class _SignUpScreenPageState extends State<SignUpScreen> {
         } else {
           print(e.message);
         }
-
+        showToast("Une erreur est survenue !");
       }
     }
     displayDialog(BuildContext context) {

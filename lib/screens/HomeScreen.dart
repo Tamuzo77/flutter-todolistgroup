@@ -9,6 +9,7 @@ class HomeScreenPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
+        leading: Icon(Icons.grid_view),
       ),
     );
   }
