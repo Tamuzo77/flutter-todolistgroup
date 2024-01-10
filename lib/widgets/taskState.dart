@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:todolistgroup/services/ToDoService.dart';
 import 'package:todolistgroup/widgets/pinnedWidget.dart';
 
-class TaskState extends StatelessWidget {
+class TaskState extends StatefulWidget {
   const TaskState({super.key});
+
+  @override
+  State<TaskState> createState() => _TaskStateState();
+}
+
+
+class _TaskStateState extends State<TaskState> {
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +34,9 @@ class TaskState extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PinnedWidget(
-                      icon: Icon(Icons.remove_red_eye_outlined),
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                     ),
                     SizedBox(
                       height: 10,
@@ -39,10 +48,16 @@ class TaskState extends StatelessWidget {
                     ),
                     SizedBox(height: 40),
                     Text(
-                      "Urgente: ",
+                      "Higher: ",
                       style: TextStyle(color: Colors.grey[300]),
                     ),
                     SizedBox(height: 70),
+              FutureBuilder(
+                  future: ToDoService.getAllTodos() ,
+                  builder: (context,snapshot){
+                    return Column(
+                    );
+                  }),
                     LinearPercentIndicator(
                       percent: 0.7,
                       barRadius: Radius.circular(10),
@@ -71,32 +86,47 @@ class TaskState extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        PinnedWidget(
-                          icon: Icon(Icons.remove_red_eye_outlined),
-                          onPressed: () {},
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: PinnedWidget(
+                            onPressed: () {},
+                          ),
                         ),
                         SizedBox(height: 10 ),
+
                         Text("Taches non commencees",
                             style: GoogleFonts.gabriela(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             )),
                         SizedBox(height: 45),
-                        LinearPercentIndicator(
-                            percent: 0.4,
-                            progressColor: Colors.greenAccent[400],
-                            barRadius: Radius.circular(10),
+                        FutureBuilder(
+                            future: ToDoService.getAllTodos() ,
+                            builder: (context,snapshot){
+                              return Column(
+                                children: [
+                                LinearPercentIndicator(
+                                percent: 0.4,
+                                progressColor: Colors.greenAccent[400],
+                                barRadius: Radius.circular(10),
+                              ),
+                              SizedBox(height: 10,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Nbre de taches non commencees,",style: TextStyle(fontSize: 8),
+                                  ),
+                                  Text("40%",style: TextStyle(fontSize: 8))
+                                ],
+                              )
+                                ]
+                              );
+
+                            }
                         ),
-                        SizedBox(height: 10,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Nbre de taches non commencees,",style: TextStyle(fontSize: 8),
-                            ),
-                            Text("40%",style: TextStyle(fontSize: 8))
-                          ],
-                        )
+
+
                       ],
                     ),
                   ),
@@ -115,7 +145,6 @@ class TaskState extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             PinnedWidget(
-                              icon: Icon(Icons.remove_red_eye_outlined),
                               onPressed: () {},
                             ),
                             // TODO: Onilari

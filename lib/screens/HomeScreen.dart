@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolistgroup/models/authenticated_user.dart';
 import 'package:todolistgroup/screens/Calendar.dart';
+import 'package:todolistgroup/services/ToDoService.dart';
 import 'package:todolistgroup/theme/Palette.dart';
 import 'package:todolistgroup/widgets/ListWidget.dart';
 import 'package:todolistgroup/widgets/drawerWidget.dart';
@@ -24,6 +25,8 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
 
   List<String> userData = [];
   User user = User();
+
+  List todos = [];
   void loadDataUser() async {
     SharedPreferences prefs =  await SharedPreferences.getInstance();
 
@@ -39,6 +42,12 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
   void initState() {
     super.initState();
     loadDataUser();
+    ToDoService.getAllTodos().then((value) {
+      setState(() {
+        print(value);
+        todos = value;
+      });
+    });
   }
 
   AdvancedDrawerController drawerController = AdvancedDrawerController();
@@ -48,7 +57,7 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
     return AdvancedDrawer(
       //openRatio: 0.5,
       controller: drawerController,
-      backdropColor: Colors.deepPurpleAccent,
+      backdropColor: Colors.deepPurpleAccent.shade700,
       child: Scaffold(
         appBar: AppBar(
           leading: Container(

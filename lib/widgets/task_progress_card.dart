@@ -1,11 +1,55 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:todolistgroup/models/todo.dart';
+import 'package:todolistgroup/services/ToDoService.dart';
 import 'package:todolistgroup/theme/Palette.dart';
 
-class TaskProgressCard extends StatelessWidget {
+class TaskProgressCard extends StatefulWidget {
   const TaskProgressCard({super.key});
 
+  @override
+  State<TaskProgressCard> createState() => _TaskProgressCardState();
+}
+
+class _TaskProgressCardState extends State<TaskProgressCard> {
+
+  List todos = [];
+
+  void initilalizeTodos() async {
+    try {
+      todos = await ToDoService.getAllTodos();
+
+    }on DioException catch (e) {
+
+      if (e.response != null) {
+        print(e.response?.data);
+        print(e.response?.statusCode);
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+
+    }
+    setState(() async {
+
+
+    });
+  }
+  @override
+  void initState() {
+    /*ToDoService.getAllTodos().then((value) {
+      setState(() {
+        print(value);
+        todos = value;
+      });
+    });*/
+
+    initilalizeTodos();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +77,18 @@ class TaskProgressCard extends StatelessWidget {
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  Text("30/40 task done ", style: TextStyle(color: Colors.grey[500]),),
+                  FutureBuilder(
+                    future: ToDoService.getAllTodos(),
+                    builder: (context, snapshot){
+                      print(snapshot.data);
+                      print(todos);
+                      if(true){
+                        return Text("30/${todos.length} task done ", style: TextStyle(color: Colors.grey[500]),);
+                      }else{
+                        return Text("No task found ", style: TextStyle(color: Colors.grey[500]),);
+                      }
+                    },
+                  ),
                   SizedBox(height: 10,),
                   Container(
                     width: 100,

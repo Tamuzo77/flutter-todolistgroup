@@ -14,6 +14,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenPageState extends State<SignUpScreen> {
 
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -24,11 +25,12 @@ class _SignUpScreenPageState extends State<SignUpScreen> {
   bool displayInfo = false;
 
   void onPressed() async {
-
-
       final UserService userService = UserService();
       // TODO: Verifier la validation du formulaire
-
+      Navigator.pop(context);
+      setState(() {
+        loading = true;
+      });
       try {
         Map<String, dynamic> dataUser = {
           'fullname': nameController.text,
@@ -95,84 +97,101 @@ class _SignUpScreenPageState extends State<SignUpScreen> {
 
         ),
         body: Center(
-          child: Column(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.only(top: 80)),
-              Text("SIGN UP!", style: TextStyle(fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: Colors.grey),),
-              const Text("Tell us more about you!", style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 20, color: Colors.cyan
-              ),),
-              Form(
-                  key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(top: 50)),
+                Text("SIGN UP!", style: TextStyle(fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.grey),),
+                const Text("Tell us more about you!", style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 20, color: Colors.cyan
+                ),),
+                Container(
+                  margin: EdgeInsets.only(left: 50,top: 30,right: 50,bottom: 30),
                   child: Column(
                     children: [
-                      //    Padding(padding: EdgeInsets.all({double left = 50.0,doubble top = 50.0,double right = 50.0,double bottom = 50.0,}),
-                      TextFormField(
-                        keyboardType: TextInputType.name,
-                        controller: nameController,
-                        decoration: InputDecoration(
-                            hintText: 'Your sweet name'
-                        ),
-                        validator: (String? value) {
-                          return value == null || value == ""
-                              ? "Ce champ est obligatoire"
-                              : null;
-                        },
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: emailController,
-                        decoration: InputDecoration(
-                            hintText: 'E-mail adress?'
-                        ),
-                        validator: (String? value) {
-                          return value == null || value == ""
-                              ? "Ce champ est obligatoire"
-                              : null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: passwordController,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            hintText: 'A password is useful'
-                        ),
-                        validator: (String? value) {
-                          return value == null || value == ""
-                              ? "Ce champ est obligatoire"
-                              : null;
-                        },
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: repeatpasswordController,
-
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            hintText: 'Write it again, please :)'
-                        ),
-                        validator: (String? value) {
-                          return value !=  passwordController.text ? "Password non identique" : "";
-                        },
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 60)),
-                      ElevatedButton(
-                          onPressed: onPressed,
-                          child: loading ? SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          ) : Text("DONE!")
+                      Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              //    Padding(padding: EdgeInsets.all({double left = 50.0,doubble top = 50.0,double right = 50.0,double bottom = 50.0,}),
+                              TextFormField(
+                                keyboardType: TextInputType.name,
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                    icon: Icon(Icons.person,color: Colors.blueAccent,),
+                                    hintText: 'Your sweet name'
+                                ),
+                                validator: (String? value) {
+                                  return value == null || value == ""
+                                      ? "Ce champ est obligatoire"
+                                      : null;
+                                },
+                              ),
+                              Padding(padding: EdgeInsets.only(top: 20)),
+                              TextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                  icon: Icon(Icons.mail,color: Colors.blueAccent,),
+                                    hintText: 'E-mail adress?'
+                                ),
+                                validator: (String? value) {
+                                  return value == null || value == ""
+                                      ? "Ce champ est obligatoire"
+                                      : null;
+                                },
+                              ),
+                              Padding(padding: EdgeInsets.only(top: 20)),
+                              TextFormField(
+                                controller: passwordController,
+                                keyboardType: TextInputType.text,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                    icon: Icon(Icons.password,color: Colors.blueAccent,),
+                                    hintText: 'A password is useful'
+                                ),
+                                validator: (String? value) {
+                                  return value == null || value == ""
+                                      ? "Ce champ est obligatoire"
+                                      : null;
+                                },
+                              ),
+                              Padding(padding: EdgeInsets.only(top: 20)),
+                              TextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: repeatpasswordController,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                    icon: Icon(Icons.password,color: Colors.blueAccent,),
+                                    hintText: 'Write it again, please :)'
+                                ),
+                                validator: (String? value) {
+                                  return value !=  passwordController.text ? "Password non identique" :  null; },),
+                              Padding(padding: EdgeInsets.only(top: 70)),
+                              ElevatedButton(
+                                  onPressed: onPressed,
+                                  child: loading ? SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ) : Text("DONE!")
+                              ),
+                                ],
+                          )
                       )
                     ],
-                  )
-              )
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

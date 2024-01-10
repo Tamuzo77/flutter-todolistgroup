@@ -19,17 +19,17 @@ class DetailsTaskScreen extends StatelessWidget {
             centerTitle: true,
             pinned: true,
             floating: true,
-            actions: [
-
-            ],
+            actions: [],
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 padding: EdgeInsets.only(left: 10.0, top: 30, right: 10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25) ),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25)),
                   color: Colors.deepPurpleAccent,
-                ) ,
-                child:Column(
+                ),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -43,11 +43,10 @@ class DetailsTaskScreen extends StatelessWidget {
                             width: 30,
                             height: 30,
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromRGBO(0, 0, 0, 0.2)
-                              ),
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(0, 0, 0, 0.2)),
                             child: Image.asset(
-                                "assets/icons/pencil.png",
+                              "assets/icons/pencil.png",
                               scale: 30,
                               color: Colors.grey[300],
                             ),
@@ -55,37 +54,73 @@ class DetailsTaskScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(height: 8,),
-                    Text("Un peu de blablabla !", style: GoogleFonts.dmSerifDisplay(fontSize: 25, fontWeight: FontWeight.bold),),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Un peu de blablabla !",
+                      style: GoogleFonts.dmSerifDisplay(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(height: 30),
-                    Text("Due date", style: TextStyle(fontSize: 15),),
+                    Text(
+                      "Due date",
+                      style: TextStyle(fontSize: 15),
+                    ),
                     SizedBox(height: 10),
                     Row(
                       children: [
                         Icon(Icons.access_alarms),
                         SizedBox(width: 10),
-                        Text("10 am - 1 pm",style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold )),
+                        Text("10 am - 1 pm",
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold)),
                         SizedBox(width: 30),
                         Icon(Icons.calendar_month_outlined),
                         SizedBox(width: 10),
                         Text("May 29"),
-
                       ],
                     ),
                   ],
                 ),
               ),
-
             ),
           ),
-
           SliverToBoxAdapter(
-            child: Container(
-                  height: 1000,
+              child: Container(
+                padding: EdgeInsets.all(18),
+            height: 1000,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    "Description",
+                style: GoogleFonts.dmSerifDisplay(
+                  fontSize: 25
+                ),),
+                SizedBox(height: 15,),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    width: 900,
+                    //height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Palette.cardColor),
+                    ),
+                    child:
+                    Text(
+                      "Le scoop du siecle",
+                      style: GoogleFonts.dmSerifDisplay(
+                        fontSize: 18
+                    ),),
+                  ),
                 )
-          )
+              ],
+            ),
+          ))
         ],
-
       ),
     );
   }

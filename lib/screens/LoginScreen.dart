@@ -40,8 +40,8 @@ class _LoginScreenPageState extends State<LoginScreenPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       prefs.setString('authToken',user.accessToken!);
-      prefs.setStringList('authUser', [user.user!.fullname!, user.user!.email!]);
-      showToast("Utilisateur crée avec succes !", context: context);
+      prefs.setStringList('authUser', [user.user!.id!,user.user!.fullname!, user.user!.email!, ]);
+      showToast("Utilisateur connecté avec succes !", context: context);
       Navigator.pushReplacementNamed(context, HomeScreenPage.routeName);
     }on DioException catch(e){
       if (e.response != null) {
@@ -83,57 +83,67 @@ class _LoginScreenPageState extends State<LoginScreenPage> {
       appBar: AppBar(
       ),
      body: Center(
-       child: Column(
-         children:[
-
-           Padding(padding: EdgeInsets.only(top: 50)),
-           Text('LOG IN!',style: TextStyle(color: Colors.indigo,fontSize: 50,),
-           textAlign: TextAlign.center,),
-           Text('Happy to see you again!',style: TextStyle(color: Colors.lightBlueAccent,fontSize: 20)),
-           Padding(padding: EdgeInsets.only(top: 70)),
-           TextFormField(
-              controller: emailController,
-             decoration: InputDecoration(
-             labelText: 'Nom',
-             hintText: 'Entrez votre nom d''utilisateur',
-             icon: Icon(Icons.person,color: Colors.blueAccent,),
-           ),
-             //validator: (val)=>val.length==0,
-            keyboardType: TextInputType.text,
-             validator: (String? value) {
-               return value == null || value == "" ? "Ce champ est obligatoire" : null;
-             },
-           ),
-           TextFormField(
-             controller: passwordController,
-             decoration: InputDecoration(
-             labelText: 'Password',
-             hintText: 'Entrez votre mot de passe',
-             icon: Icon(Icons.password,color: Colors.blueAccent,),
-           ),
-             keyboardType: TextInputType.text,
-             obscureText: true,
-             validator: (String? value) {
-               return value == null || value == "" ? "Ce champ est obligatoire" : null;
-             },
-           ),
-
-           Padding(padding: EdgeInsets.only(top: 70)),
-           ElevatedButton(
-               onPressed: () {
-                   displayDialog(context);
-
-               },
-               child: loading ? SizedBox(
-                 height: 30,
-                 width: 30,
-                 child: CircularProgressIndicator(
-                   strokeWidth: 2,
-                 ),
-               ) : Text("DONE!")
-           )
-
-         ],
+       child: SingleChildScrollView(
+         child: Column(
+           children:[
+         
+             Padding(padding: EdgeInsets.only(top: 50)),
+             Text('LOG IN!',style: TextStyle(color: Colors.indigo,fontSize: 50,),
+             textAlign: TextAlign.center,),
+             Text('Happy to see you again!',style: TextStyle(color: Colors.lightBlueAccent,fontSize: 20)),
+             Padding(padding: EdgeInsets.only(top: 70)),
+             Container(
+               margin:EdgeInsets.only(top: 30,left: 50,right: 50,bottom: 30),
+               child: Column(
+                 children:[
+                   TextFormField(
+                     controller: emailController,
+                     decoration: InputDecoration(
+                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                       labelText: 'Email',
+                       icon: Icon(Icons.mail,color: Colors.blueAccent,),
+                     ),
+                     //validator: (val)=>val.length==0,
+                     keyboardType: TextInputType.text,
+                     validator: (String? value) {
+                       return value == null || value == "" ? "Ce champ est obligatoire" : null;
+                     },
+                   ),
+                   TextFormField(
+                     controller: passwordController,
+                     decoration: InputDecoration(
+                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                       labelText: 'Password',
+                       icon: Icon(Icons.password,color: Colors.blueAccent,),
+                     ),
+                     keyboardType: TextInputType.text,
+                     obscureText: true,
+                     validator: (String? value) {
+                       return value == null || value == "" ? "Ce champ est obligatoire" : null;
+                     },
+                   ),
+                 ],
+               ),
+             ),
+         
+         
+             Padding(padding: EdgeInsets.only(top: 70)),
+             ElevatedButton(
+                 onPressed: () {
+                     displayDialog(context);
+         
+                 },
+                 child: loading ? SizedBox(
+                   height: 30,
+                   width: 30,
+                   child: CircularProgressIndicator(
+                     strokeWidth: 2,
+                   ),
+                 ) : Text("DONE!")
+             )
+         
+           ],
+         ),
        ),
      ),
     );
